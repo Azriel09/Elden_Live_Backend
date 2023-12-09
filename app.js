@@ -5,7 +5,7 @@ const router = express.Router()
 const cors = require('cors');
 const bodyParser = require('body-parser')
 const mysql = require('mysql2')
-
+const async = require("async")
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const dbConfig = {
   host: "localhost",
   user: "root",
-  password: "pass",
+  password: "My092948",
   database: "elden_live",
   port: 3306
 }
@@ -54,6 +54,50 @@ app.get("/test", (req, res) => {
     return res.json(results)
   })
 })
+
+
+app.get("/get_links", function (req, res) {
+  // Define the queries to run
+  var query1 = "SELECT * FROM ame_links";
+  var query2 = "SELECT * FROM gura_links";
+
+
+
+  async.parallel(
+    [
+      function (callback) {
+   
+        db.query(query1, function (err, result) {
+          if (err) return callback(err);
+          callback(null, result);
+        });
+      },
+      function (callback) {
+  
+        db.query(query2, function (err, result) {
+          if (err) return callback(err);
+          callback(null, result);
+        });
+      },
+    
+    ],
+    function (err, results) {
+      // This function is called after all queries are done
+      if (err) {
+        // If there is an error, send a 500 response
+        res.status(500).json({ error: err.message });
+      } else {
+        // If there is no error, send a 200 response with the results
+        res.status(200).json({
+          "Amelia Watson": results[0],
+          "Gawr Gura": results[1],
+  
+        });
+      }
+    }
+  );
+});
+
 
 
 app.get("/links", (req, res) => {
