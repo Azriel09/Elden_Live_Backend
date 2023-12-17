@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const dbConfig = {
   host: "localhost",
   user: "root",
-  password: "My092948",
+  password: "pass",
   database: "elden_live",
   port: 3306
 }
@@ -98,11 +98,18 @@ app.get("/get_links", function (req, res) {
   );
 });
 
-
-
-app.get("/links", (req, res) => {
-  const talent = req.body.talent
-  const q = `SELECT * FROM ${talent}_links`
+app.get("/get_deaths", function (req, res) {
+  var q = "SELECT * FROM ame_deaths"
+  db.query(q,function(err, results){
+    if (err) {
+      console.error('Error executing MySQL query:', err);
+      return res.status(500).json({ error: 'Internal Server Error' });
+      
+    }
+    return res.json(results)
+  })
 })
+
+
 
 module.exports = app;
