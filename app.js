@@ -59,7 +59,11 @@ app.get("/test", (req, res) => {
 app.get("/get_links", function (req, res) {
   // Define the queries to run
   var query1 = "SELECT * FROM ame_links";
-  var query2 = "SELECT * FROM gura_links";
+  var query2 = "SELECT * FROM calli_links"
+  var query3 = "SELECT * FROM gura_links";
+  var query4 = "SELECT * FROM ina_links"
+  var query5 = "SELECT * FROM irys_links"
+  var query6 = "SELECT * FROM kronii_links"
 
 
 
@@ -78,6 +82,31 @@ app.get("/get_links", function (req, res) {
           if (err) return callback(err);
           callback(null, result);
         });
+      },      function (callback) {
+   
+        db.query(query3, function (err, result) {
+          if (err) return callback(err);
+          callback(null, result);
+        });
+      },
+      function (callback) {
+   
+        db.query(query4, function (err, result) {
+          if (err) return callback(err);
+          callback(null, result);
+        });
+      },      function (callback) {
+   
+        db.query(query5, function (err, result) {
+          if (err) return callback(err);
+          callback(null, result);
+        });
+      },      function (callback) {
+   
+        db.query(query6, function (err, result) {
+          if (err) return callback(err);
+          callback(null, result);
+        });
       },
     
     ],
@@ -90,7 +119,12 @@ app.get("/get_links", function (req, res) {
         // If there is no error, send a 200 response with the results
         res.status(200).json({
           "Amelia Watson": results[0],
-          "Gawr Gura": results[1],
+          "Mori Calliope": results[1],
+          "Gawr Gura": results[2],
+          "Ninomae Ina'nis": results[3],
+          "IRyS": results[4],
+          "Ouro Kronii": results[5],
+          
   
         });
       }
@@ -99,15 +133,75 @@ app.get("/get_links", function (req, res) {
 });
 
 app.get("/get_deaths", function (req, res) {
-  var q = "SELECT * FROM ame_deaths"
-  db.query(q,function(err, results){
-    if (err) {
-      console.error('Error executing MySQL query:', err);
-      return res.status(500).json({ error: 'Internal Server Error' });
-      
+  var query1 = "SELECT * FROM ame_deaths"
+  var query2 = "SELECT * FROM calli_deaths"
+  var query3 = "SELECT * FROM gura_deaths"
+  var query4 = "SELECT * FROM ina_deaths"
+  var query5 = "SELECT * FROM irys_deaths"
+  var query6 = "SELECT * FROM kronii_deaths"
+  async.parallel(
+    [
+      function (callback) {
+   
+        db.query(query1, function (err, result) {
+          if (err) return callback(err);
+          callback(null, result);
+        });
+      },
+      function (callback) {
+  
+        db.query(query2, function (err, result) {
+          if (err) return callback(err);
+          callback(null, result);
+        });
+      },      function (callback) {
+   
+        db.query(query3, function (err, result) {
+          if (err) return callback(err);
+          callback(null, result);
+        });
+      },
+      function (callback) {
+   
+        db.query(query4, function (err, result) {
+          if (err) return callback(err);
+          callback(null, result);
+        });
+      },      function (callback) {
+   
+        db.query(query5, function (err, result) {
+          if (err) return callback(err);
+          callback(null, result);
+        });
+      },      function (callback) {
+   
+        db.query(query6, function (err, result) {
+          if (err) return callback(err);
+          callback(null, result);
+        });
+      },
+    
+    ],
+    function (err, results) {
+      // This function is called after all queries are done
+      if (err) {
+        // If there is an error, send a 500 response
+        res.status(500).json({ error: err.message });
+      } else {
+        // If there is no error, send a 200 response with the results
+        res.status(200).json({
+          "Amelia Watson": results[0],
+          "Mori Calliope": results[1],
+          "Gawr Gura": results[2],
+          "Ninomae Ina'nis": results[3],
+          "IRyS": results[4],
+          "Ouro Kronii": results[5],
+          
+  
+        });
+      }
     }
-    return res.json(results)
-  })
+  );
 })
 
 
