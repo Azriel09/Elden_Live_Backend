@@ -1,11 +1,11 @@
 const express = require('express')
-
 const app = express()
 const router = express.Router()
 const cors = require('cors');
 const bodyParser = require('body-parser')
 const mysql = require('mysql2')
 const async = require("async")
+require('dotenv').config();
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
@@ -27,20 +27,20 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 
 const dbConfig = {
-  host: "localhost",
-  user: "root",
-  password: "pass",
-  database: "elden_live",
-  port: 3306
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT
 }
 const db = mysql.createConnection(dbConfig)
 
 db.connect((err) => {
   if(err) {
-      console.log("Error connecting to MySQL RDS:", err)
+      console.log("Error connecting to MySQL", err)
       return
   }
-  console.log("Connected to MySQL RDS")
+  console.log("Connected to MySQL")
 })
 
 app.get("/test", (req, res) => {
