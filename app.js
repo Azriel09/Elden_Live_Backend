@@ -6,6 +6,11 @@ const bodyParser = require('body-parser')
 const mysql = require('mysql2')
 const async = require("async")
 require('dotenv').config();
+
+app.use(cors());
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use(function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
@@ -20,10 +25,6 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use(cors());
-app.use(express.json());
-
-app.use(bodyParser.urlencoded({ extended: true }));
 
 
 const dbConfig = {
@@ -57,6 +58,11 @@ app.get("/test", (req, res) => {
 
 
 app.get("/get_links", function (req, res) {
+
+
+  if(process.env.CLIENT_API !== req.headers.apikey) {
+    return
+  }
   // Define the queries to run
   var query1 = "SELECT * FROM ame_links";
   var query2 = "SELECT * FROM calli_links"
@@ -64,7 +70,7 @@ app.get("/get_links", function (req, res) {
   var query4 = "SELECT * FROM ina_links"
   var query5 = "SELECT * FROM irys_links"
   var query6 = "SELECT * FROM kronii_links"
-
+ 
 
 
   async.parallel(
@@ -113,10 +119,10 @@ app.get("/get_links", function (req, res) {
     function (err, results) {
       // This function is called after all queries are done
       if (err) {
-        // If there is an error, send a 500 response
+        // If there is an error, send a 500 res
         res.status(500).json({ error: err.message });
       } else {
-        // If there is no error, send a 200 response with the results
+        // If there is no error, send a 200 res with the results
         res.status(200).json({
           "Amelia Watson": results[0],
           "Mori Calliope": results[1],
@@ -133,6 +139,10 @@ app.get("/get_links", function (req, res) {
 });
 
 app.get("/get_deaths", function (req, res) {
+  
+  if(process.env.CLIENT_API !== req.headers.apikey) {
+    return
+  }
   var query1 = "SELECT * FROM ame_deaths"
   var query2 = "SELECT * FROM calli_deaths"
   var query3 = "SELECT * FROM gura_deaths"
@@ -185,10 +195,10 @@ app.get("/get_deaths", function (req, res) {
     function (err, results) {
       // This function is called after all queries are done
       if (err) {
-        // If there is an error, send a 500 response
+        // If there is an error, send a 500 res
         res.status(500).json({ error: err.message });
       } else {
-        // If there is no error, send a 200 response with the results
+        // If there is no error, send a 200 res with the results
         res.status(200).json({
           "Amelia Watson": results[0],
           "Mori Calliope": results[1],
