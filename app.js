@@ -214,6 +214,23 @@ app.get("/get_deaths", function (req, res) {
   );
 })
 
+app.get("/get_boss_stats", function(req, res) {
+  if(process.env.CLIENT_API !== req.headers.apikey) {
+    return
+  }
+  const q = "SELECT * FROM boss_talent_stats"
+
+  db.query(q, function(err, results) {
+    if (err){
+      console.error("Error executing Boss Stats MySQL Query:", err);
+      return res.status(500).json({error: "Internal Server Error"});
+    }
+
+    return res.json(results)
+    
+  })
+})
+
 
 
 module.exports = app;
