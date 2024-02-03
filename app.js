@@ -44,17 +44,7 @@ db.connect((err) => {
   console.log("Connected to MySQL")
 })
 
-app.get("/test", (req, res) => {
-  const q = "SELECT * FROM ame_links"
-  db.query(q,function(err, results){
-    if (err) {
-      console.error('Error executing MySQL query:', err);
-      return res.status(500).json({ error: 'Internal Server Error' });
-      
-    }
-    return res.json(results)
-  })
-})
+
 
 
 app.get("/get_links", function (req, res) {
