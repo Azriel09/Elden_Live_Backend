@@ -60,7 +60,7 @@ app.get("/get_links", function (req, res) {
   var query4 = "SELECT * FROM ina_links"
   var query5 = "SELECT * FROM irys_links"
   var query6 = "SELECT * FROM kronii_links"
- 
+  var query7 = "SELECT * FROM biboo_links"
 
 
   async.parallel(
@@ -73,13 +73,12 @@ app.get("/get_links", function (req, res) {
         });
       },
       function (callback) {
-  
         db.query(query2, function (err, result) {
           if (err) return callback(err);
           callback(null, result);
         });
-      },      function (callback) {
-   
+      },      
+      function (callback) {
         db.query(query3, function (err, result) {
           if (err) return callback(err);
           callback(null, result);
@@ -91,19 +90,26 @@ app.get("/get_links", function (req, res) {
           if (err) return callback(err);
           callback(null, result);
         });
-      },      function (callback) {
-   
+      },      
+      function (callback) {
         db.query(query5, function (err, result) {
           if (err) return callback(err);
           callback(null, result);
         });
-      },      function (callback) {
-   
+      },      
+      function (callback) {
         db.query(query6, function (err, result) {
           if (err) return callback(err);
           callback(null, result);
         });
       },
+      function (callback) {
+        db.query(query7, function (err, result) {
+          if (err) return callback(err);
+          callback(null, result);
+        });
+      },
+      
     
     ],
     function (err, results) {
@@ -120,7 +126,7 @@ app.get("/get_links", function (req, res) {
           "Ninomae Ina'nis": results[3],
           "IRyS": results[4],
           "Ouro Kronii": results[5],
-          
+          "Koseki Biboo": results[6]
   
         });
       }
@@ -139,6 +145,7 @@ app.get("/get_deaths", function (req, res) {
   var query4 = "SELECT * FROM ina_deaths"
   var query5 = "SELECT * FROM irys_deaths"
   var query6 = "SELECT * FROM kronii_deaths"
+  var query7 = "SELECT * FROM biboo_deaths"
   async.parallel(
     [
       function (callback) {
@@ -149,13 +156,12 @@ app.get("/get_deaths", function (req, res) {
         });
       },
       function (callback) {
-  
         db.query(query2, function (err, result) {
           if (err) return callback(err);
           callback(null, result);
         });
-      },      function (callback) {
-   
+      },   
+      function (callback) {
         db.query(query3, function (err, result) {
           if (err) return callback(err);
           callback(null, result);
@@ -167,15 +173,21 @@ app.get("/get_deaths", function (req, res) {
           if (err) return callback(err);
           callback(null, result);
         });
-      },      function (callback) {
-   
+      },      
+      function (callback) {
         db.query(query5, function (err, result) {
           if (err) return callback(err);
           callback(null, result);
         });
-      },      function (callback) {
-   
+      },      
+      function (callback) {
         db.query(query6, function (err, result) {
+          if (err) return callback(err);
+          callback(null, result);
+        });
+      },
+      function (callback) {
+        db.query(query7, function (err, result) {
           if (err) return callback(err);
           callback(null, result);
         });
@@ -196,6 +208,7 @@ app.get("/get_deaths", function (req, res) {
           "Ninomae Ina'nis": results[3],
           "IRyS": results[4],
           "Ouro Kronii": results[5],
+          "Koseki Biboo": results[6],
           
   
         });
